@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,6 +12,23 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
+
+    // Each active slow source and its multiplier (e.g. 0.5 = half speed)
+    private readonly Dictionary<object, float> slowEffects = new Dictionary<object, float>();
+
+    public void AddSlow(object source, float multiplier) => slowEffects[source] = multiplier;
+    public void RemoveSlow(object source) => slowEffects.Remove(source);
+
+    private float SpeedMultiplier
+    {
+        get
+        {
+            float result = 1f;
+            foreach (float m in slowEffects.Values)
+                result = Mathf.Min(result, m); // strongest slow wins
+            return result;
+        }
+    }
 
     private void Awake()
     {
@@ -40,12 +58,11 @@ public class PlayerMovement : MonoBehaviour
             if (kb.upArrowKey.isPressed) y += 1f;
         }
 
-        // Normalize so diagonal movement isn't faster
         moveInput = new Vector2(x, y).normalized;
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = moveInput * moveSpeed;
+        rb.linearVelocity = moveInput * moveSpeed * SpeedMultiplier;
     }
 }

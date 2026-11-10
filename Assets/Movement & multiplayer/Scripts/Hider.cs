@@ -6,6 +6,7 @@ using UnityEngine;
 public class Hider : MonoBehaviour
 {
     public static event Action<Hider> OnReachedGoal;
+    public static event Action<Hider> OnCaught;
 
     [SerializeField] private Transform startPoint;
     [SerializeField] private SpriteRenderer sprite;
@@ -15,8 +16,8 @@ public class Hider : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerMovement movement;
     private Color normalColor;
+    private bool locked; // set when the game is over
 
-    // True while caught/respawning. The Seeker already ignores hiders with IsFound = true.
     public bool IsFound { get; private set; }
 
     private void Awake()
@@ -28,19 +29,25 @@ public class Hider : MonoBehaviour
 
     private void Start() => MoveToStart();
 
-    // Called by the Seeker when this hider is spotted
     public void Found()
     {
-        if (IsFound) return;
+        if (IsFound || locked) return;
         StartCoroutine(CaughtRoutine());
     }
 
-    // Called by the Goal zone
     public void ReachedGoal()
     {
-        if (IsFound) return;
+        if (IsFound || locked) return;
         OnReachedGoal?.Invoke(this);
-        MoveToStart(); // the "new hider" begins at the start
+        if (!locked) MoveToStart();
+    }
+
+    // Called by the manager when the game ends. Nobody can move or respawn after this.
+    public void Lock()
+    {
+        locked = true;
+        StopAllCoroutines();
+        Freeze();
     }
 
     public void Freeze()
@@ -54,6 +61,9 @@ public class Hider : MonoBehaviour
         IsFound = true;
         Freeze();
         if (sprite != null) sprite.color = caughtColor;
+
+        OnCaught?.Invoke(this); // the manager may lock us if this was the last life
+        if (locked) yield break;
 
         yield return new WaitForSeconds(respawnDelay);
 
@@ -70,4 +80,3 @@ public class Hider : MonoBehaviour
         transform.position = startPoint.position;
     }
 }
-
