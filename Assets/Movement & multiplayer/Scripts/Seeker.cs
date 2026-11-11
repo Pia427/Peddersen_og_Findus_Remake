@@ -3,7 +3,12 @@ using UnityEngine;
 public class Seeker : MonoBehaviour
 {
     [Header("Audio")]
-    [SerializeField] private AudioSource radarSource;   
+    [SerializeField] private AudioSource radarSource;
+    [SerializeField] private AudioClip pingClip;
+    [Range(0f, 1f)]
+    [SerializeField] private float pingVolume = 0.5f;
+    [SerializeField] private int pingsPerRotation = 1;   // 1 = one ping per full 360°
+    
     [Header("Rotation")]
     [SerializeField] private float rotationSpeed = 60f; // degrees per second, positive = clockwise
 
@@ -16,19 +21,24 @@ public class Seeker : MonoBehaviour
     public float ViewAngle => viewAngle;
     public float ViewDistance => viewDistance;
     public LayerMask ObstacleMask => obstacleMask;
+    private float sweptSinceLastPing;
+    private float pingAngle => 360f / Mathf.Max(1, pingsPerRotation);
 
     private bool isActive = true;
 
     public void SetActive(bool value)
     {
-       {
-    isActive = value;
+        {
+        isActive = value;
 
-    if (radarSource == null) return;
-    if (value) radarSource.Play();
-    else radarSource.Stop();
-} 
+        if (!value && radarSource != null) radarSource.Stop(); // cut off a ping mid-play
+        } 
     } 
+
+    private void Start()
+    {
+        PlayPing();
+    }
         
     private void Update()
     {
@@ -36,7 +46,34 @@ public class Seeker : MonoBehaviour
 
         transform.Rotate(0f, 0f, -rotationSpeed * Time.deltaTime);
         DetectHiders();
+
+        {
+            if (!isActive) return;
+
+            float step = rotationSpeed * Time.deltaTime;
+            transform.Rotate(0f, 0f, -step);
+
+            TrackSweepForPing(Mathf.Abs(step));
+            DetectHiders();
+        }
     }
+
+    private void TrackSweepForPing(float stepDegrees)
+{
+    sweptSinceLastPing += stepDegrees;
+
+    if (sweptSinceLastPing >= pingAngle)
+    {
+        sweptSinceLastPing -= pingAngle;
+        PlayPing();
+    }
+}
+
+private void PlayPing()
+{
+    if (radarSource == null || pingClip == null) return;
+    radarSource.PlayOneShot(pingClip, pingVolume);
+}
 
     private void DetectHiders()
     {
