@@ -12,13 +12,17 @@ public class Hider : MonoBehaviour
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Color caughtColor = Color.red;
     [SerializeField] private float respawnDelay = 1f;
+    [Range(0.1f, 1f)]
+    [SerializeField] private float hiddenAlpha = 0.5f;
 
     private Rigidbody2D rb;
     private PlayerMovement movement;
     private Color normalColor;
-    private bool locked; // set when the game is over
+    private bool locked;
+    private int coverCount; // how many hiding spots we're currently inside
 
     public bool IsFound { get; private set; }
+    public bool IsHidden => coverCount > 0;
 
     private void Awake()
     {
@@ -28,6 +32,18 @@ public class Hider : MonoBehaviour
     }
 
     private void Start() => MoveToStart();
+
+    public void EnterCover()
+    {
+        coverCount++;
+        UpdateVisual();
+    }
+
+    public void ExitCover()
+    {
+        coverCount = Mathf.Max(0, coverCount - 1);
+        UpdateVisual();
+    }
 
     public void Found()
     {
@@ -42,7 +58,6 @@ public class Hider : MonoBehaviour
         if (!locked) MoveToStart();
     }
 
-    // Called by the manager when the game ends. Nobody can move or respawn after this.
     public void Lock()
     {
         locked = true;
@@ -60,23 +75,34 @@ public class Hider : MonoBehaviour
     {
         IsFound = true;
         Freeze();
-        if (sprite != null) sprite.color = caughtColor;
+        UpdateVisual();
 
-        OnCaught?.Invoke(this); // the manager may lock us if this was the last life
+        OnCaught?.Invoke(this);
         if (locked) yield break;
 
         yield return new WaitForSeconds(respawnDelay);
 
         MoveToStart();
-        if (sprite != null) sprite.color = normalColor;
         if (movement != null) movement.enabled = true;
         IsFound = false;
+        UpdateVisual();
+    }
+
+    private void UpdateVisual()
+    {
+        if (sprite == null) return;
+
+        Color c = IsFound ? caughtColor : normalColor;
+        if (IsHidden && !IsFound) c.a = hiddenAlpha;
+        sprite.color = c;
     }
 
     private void MoveToStart()
     {
+        coverCount = 0; // fresh start; entering a spot again re-registers
         rb.linearVelocity = Vector2.zero;
         rb.position = startPoint.position;
         transform.position = startPoint.position;
+        UpdateVisual();
     }
 }

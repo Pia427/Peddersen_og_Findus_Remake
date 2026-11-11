@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Seeker : MonoBehaviour
 {
+    [Header("Audio")]
+    [SerializeField] private AudioSource radarSource;   
     [Header("Rotation")]
     [SerializeField] private float rotationSpeed = 60f; // degrees per second, positive = clockwise
 
@@ -17,8 +19,17 @@ public class Seeker : MonoBehaviour
 
     private bool isActive = true;
 
-    public void SetActive(bool value) => isActive = value;
+    public void SetActive(bool value)
+    {
+       {
+    isActive = value;
 
+    if (radarSource == null) return;
+    if (value) radarSource.Play();
+    else radarSource.Stop();
+} 
+    } 
+        
     private void Update()
     {
         if (!isActive) return;
@@ -35,6 +46,7 @@ public class Seeker : MonoBehaviour
         foreach (Collider2D col in candidates)
         {
             if (!col.TryGetComponent(out Hider hider) || hider.IsFound) continue;
+            if (hider.IsHidden) continue;
 
             Vector2 toHider = (Vector2)col.transform.position - origin;
 
