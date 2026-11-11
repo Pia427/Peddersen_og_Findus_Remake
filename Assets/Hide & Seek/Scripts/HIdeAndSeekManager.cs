@@ -1,3 +1,5 @@
+using UnityEngine.SceneManagement;
+using System.Collections;
 using UnityEngine;
 
 public class HideAndSeekManager : MonoBehaviour
@@ -5,6 +7,8 @@ public class HideAndSeekManager : MonoBehaviour
     [SerializeField] private Seeker seeker;
     [SerializeField] private int hidersNeeded = 5;
     [SerializeField] private int totalLives = 5;
+    [SerializeField] private string hubSceneName = "Hub";
+    [SerializeField] private float returnDelay = 4f;
 
     private int reachedCount;
     private int livesLeft;
@@ -57,5 +61,12 @@ public class HideAndSeekManager : MonoBehaviour
             h.Lock();
 
         Debug.Log(message);
+        StartCoroutine(ReturnToHub());
+    }
+
+    private IEnumerator ReturnToHub()
+    {
+        yield return new WaitForSeconds(returnDelay);
+        SceneManager.LoadScene(hubSceneName);
     }
 }

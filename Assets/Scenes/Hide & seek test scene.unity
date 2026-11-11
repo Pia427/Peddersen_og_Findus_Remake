@@ -209,8 +209,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e72ac530dac5a6847b6a4c389565d913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Seeker
-  radarSource: {fileID: 0}
-  rotationSpeed: 55
+  radarSource: {fileID: 197305}
+  pingClip: {fileID: 8300000, guid: ad7f4b26ab461ed4ba65437b2cc58b94, type: 3}
+  pingVolume: 0.66
+  pingsPerRotation: 3
+  rotationSpeed: 40
   viewAngle: 20
   viewDistance: 20
   hiderMask:
@@ -242,11 +245,11 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 197301}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 9b19ccfb06d77a74082151eb54161604, type: 3}
+  m_Resource: {fileID: 8300000, guid: ad7f4b26ab461ed4ba65437b2cc58b94, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.071
   m_Pitch: 1
@@ -4088,6 +4091,8 @@ MonoBehaviour:
   seeker: {fileID: 197303}
   hidersNeeded: 5
   totalLives: 3
+  hubSceneName: Hub World
+  returnDelay: 4
 --- !u!4 &1050406052
 Transform:
   m_ObjectHideFlags: 0
