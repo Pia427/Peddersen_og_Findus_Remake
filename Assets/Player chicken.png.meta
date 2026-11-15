@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: af5824885ca47b84aa97acb74aa7f7d5
+guid: a96d141e524c79044a987e422071efc6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2895532656027914703
-    second: Untitled_Artwork-ezgif.com-crop (3)_0
-  - first:
-      213: -4748831127971795530
-    second: Untitled_Artwork-ezgif.com-crop (3)_1
+      213: -3617180899536011041
+    second: Untitled_Artwork-ezgif.com-crop_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -125,17 +122,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Untitled_Artwork-ezgif.com-crop (3)_0
+      name: Untitled_Artwork-ezgif.com-crop_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 373
-        width: 16
-        height: 29
+        x: 81
+        y: 14
+        width: 132
+        height: 269
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,30 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fc156160c9ffe2820800000000000000
-      internalID: 2895532656027914703
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Untitled_Artwork-ezgif.com-crop (3)_1
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 53
-        width: 254
-        height: 439
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6bd6ceedf33c81eb0800000000000000
-      internalID: -4748831127971795530
+      spriteID: fd004d2f2213dcdc0800000000000000
+      internalID: -3617180899536011041
       vertices: []
       indices: 
       edges: []
@@ -186,8 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Untitled_Artwork-ezgif.com-crop (3)_0: 2895532656027914703
-      Untitled_Artwork-ezgif.com-crop (3)_1: -4748831127971795530
+      Untitled_Artwork-ezgif.com-crop_0: -3617180899536011041
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
