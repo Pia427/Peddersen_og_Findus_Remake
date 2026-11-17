@@ -51,12 +51,14 @@ public class Hider : MonoBehaviour
         StartCoroutine(CaughtRoutine());
     }
 
-    public void ReachedGoal()
-    {
-        if (IsFound || locked) return;
-        OnReachedGoal?.Invoke(this);
-        if (!locked) MoveToStart();
-    }
+   public bool ReachedGoal()
+{
+    if (IsFound || locked) return false;
+
+    OnReachedGoal?.Invoke(this);
+    if (!locked) MoveToStart();
+    return true;
+}
 
     public void Lock()
     {

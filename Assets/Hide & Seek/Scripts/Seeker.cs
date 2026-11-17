@@ -8,7 +8,10 @@ public class Seeker : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float pingVolume = 0.5f;
     [SerializeField] private int pingsPerRotation = 1;   // 1 = one ping per full 360°
-    
+    [SerializeField] private AudioClip spottedClip;
+    [Range(0f, 1f)]
+    [SerializeField] private float spottedVolume = 0.8f;
+
     [Header("Rotation")]
     [SerializeField] private float rotationSpeed = 60f; // degrees per second, positive = clockwise
 
@@ -34,6 +37,12 @@ public class Seeker : MonoBehaviour
         if (!value && radarSource != null) radarSource.Stop(); // cut off a ping mid-play
         } 
     } 
+
+    private void PlaySpotted()
+    {
+        if (radarSource == null || spottedClip == null) return;
+        radarSource.PlayOneShot(spottedClip, spottedVolume);
+    }
 
     private void Start()
     {
@@ -94,6 +103,7 @@ private void PlayPing()
             if (Physics2D.Raycast(origin, toHider.normalized, toHider.magnitude, obstacleMask)) continue;
 
             hider.Found();
+            PlaySpotted();
         }
     }
 }
