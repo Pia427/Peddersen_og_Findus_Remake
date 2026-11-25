@@ -7,6 +7,10 @@ public class PlayerMovement : MonoBehaviour
 {
     public enum ControlScheme { WASD, Arrows }
 
+    [Header("Visuals")]
+    [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] private bool spriteFacesRight = true; // untick if your artwork faces left by default
+
     [SerializeField] private ControlScheme controls = ControlScheme.WASD;
     [SerializeField] private float moveSpeed = 5f;
 
@@ -33,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        if (sprite == null) sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Update()
@@ -59,6 +64,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         moveInput = new Vector2(x, y).normalized;
+
+        // Flip only when moving sideways, so the sprite keeps its facing when idle or moving up/down
+if (sprite != null && x != 0f)
+{
+    bool movingRight = x > 0f;
+    sprite.flipX = spriteFacesRight ? !movingRight : movingRight;
+}
     }
 
     private void FixedUpdate()

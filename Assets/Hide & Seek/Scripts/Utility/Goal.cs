@@ -22,7 +22,7 @@ public class Goal : MonoBehaviour
         Hider hider = other.GetComponentInParent<Hider>();
         if (hider == null) return;
 
-        if (hider.ReachedGoal() && goalClip != null)
+        if (!(hider.ReachedGoal() && goalClip == null))
             source.PlayOneShot(goalClip, volume);
     }
 }

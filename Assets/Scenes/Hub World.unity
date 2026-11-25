@@ -269,6 +269,10 @@ PrefabInstance:
       propertyPath: controls
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1477476277799706782, guid: b3116f83949e3f144821efcad018e71d, type: 3}
+      propertyPath: moveSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2941717172222456392, guid: b3116f83949e3f144821efcad018e71d, type: 3}
       propertyPath: m_BodyType
       value: 0
@@ -2741,6 +2745,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1477476277799706782, guid: b3116f83949e3f144821efcad018e71d, type: 3}
+      propertyPath: moveSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2941717172222456392, guid: b3116f83949e3f144821efcad018e71d, type: 3}
       propertyPath: m_BodyType
       value: 0

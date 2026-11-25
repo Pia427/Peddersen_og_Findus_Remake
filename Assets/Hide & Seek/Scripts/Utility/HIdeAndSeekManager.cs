@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HideAndSeekManager : MonoBehaviour
 {
+    [Header("UI")]
+    [SerializeField] private HideAndSeekUI ui;
     [SerializeField] private Seeker seeker;
     [SerializeField] private int hidersNeeded = 5;
     [SerializeField] private int totalLives = 5;
@@ -38,6 +40,12 @@ public class HideAndSeekManager : MonoBehaviour
     {
         livesLeft = totalLives;
         Debug.Log($"Lives: {livesLeft}");
+         livesLeft = totalLives;
+        if (ui != null)
+    {
+        ui.SetLives(livesLeft, totalLives);
+        ui.SetScore(reachedCount, hidersNeeded);
+    }
     }
 
     private void HandleReachedGoal(Hider hider)
@@ -48,6 +56,7 @@ public class HideAndSeekManager : MonoBehaviour
         Debug.Log($"{hider.name} made it! {reachedCount}/{hidersNeeded}");
 
         if (reachedCount >= hidersNeeded) EndGame("Hiders win!", true);
+        if (ui != null) ui.SetScore(reachedCount, hidersNeeded);
     }
 
     private void HandleCaught(Hider hider)
@@ -60,6 +69,7 @@ public class HideAndSeekManager : MonoBehaviour
         Debug.Log($"{hider.name} was caught! Lives left: {livesLeft}");
 
        if (livesLeft <= 0) EndGame("Seeker wins!", false); 
+       if (ui != null) ui.SetLives(Mathf.Max(0, livesLeft), totalLives);
     }
 
     private void EndGame(string message, bool hidersWon)
@@ -69,7 +79,8 @@ public class HideAndSeekManager : MonoBehaviour
 
         foreach (Hider h in FindObjectsByType<Hider>(FindObjectsSortMode.None))
             h.Lock();
-
+        if (ui != null) ui.ShowResult(message);
+        
         Debug.Log(message);
         StartCoroutine(PlayEndSound(hidersWon ? winClip : gameOverClip));
         StartCoroutine(ReturnToHub());
